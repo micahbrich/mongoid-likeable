@@ -30,7 +30,7 @@ module Mongoid
     end
     
     def likers
-      liker_ids.map{ |liker| User.find(liker) if liker.respond_to?(:_id) } || liker_ids
+      liker_ids.map{ |liker| User.find(liker) } || liker_ids
     end
 
     private
