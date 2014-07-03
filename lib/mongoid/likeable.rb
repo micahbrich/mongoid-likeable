@@ -7,26 +7,30 @@ module Mongoid
 
     included do
       field :likes, type: Integer, default: 0
-      field :likers, type: Array, default: []
+      field :liker_ids, type: Array, default: []
     end
 
     def like(liker)
       id = liker_id(liker)
       return if liked? id
-      push likers: id
+      push liker_ids: id
       update_likers
     end
 
     def unlike(liker)
       id = liker_id(liker)
       return unless liked? id
-      pull likers: id
+      pull liker_ids: id
       update_likers
     end
 
     def liked?(liker)
       id = liker_id(liker)
-      likers.include?(id)
+      liker_ids.include?(id)
+    end
+    
+    def likers
+      liker_ids.map{ |liker| User.find(liker) if liker.respond_to?(:_id) } || liker_ids
     end
 
     private
@@ -39,7 +43,7 @@ module Mongoid
     end
 
     def update_likers
-      update_attribute :likes, likers.size
+      update_attribute :likes, liker_ids.size
     end
   end
 end
