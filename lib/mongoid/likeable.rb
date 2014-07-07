@@ -22,6 +22,7 @@ module Mongoid
       return unless liked? id
       pull liker_ids: id
       update_likers
+      liker.inc(likes_count: 1) if id
     end
 
     def liked?(liker)
