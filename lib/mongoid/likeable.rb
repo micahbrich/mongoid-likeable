@@ -15,7 +15,7 @@ module Mongoid
       return if liked? id
       push liker_ids: id
       update_likers
-      liker.push(likes: self.id)
+      liker.push(liked_post_ids: self.id)
     end
 
     def unlike(liker)
