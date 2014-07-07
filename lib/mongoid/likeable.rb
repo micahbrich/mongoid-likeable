@@ -15,6 +15,7 @@ module Mongoid
       return if liked? id
       push liker_ids: id
       update_likers
+      liker.push(likes: self.id)
     end
 
     def unlike(liker)
@@ -22,7 +23,6 @@ module Mongoid
       return unless liked? id
       pull liker_ids: id
       update_likers
-      liker.inc(likes_count: 1) if id
     end
 
     def liked?(liker)
